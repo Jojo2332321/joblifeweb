@@ -1,0 +1,6 @@
+export const ADMIN_ROUTE = '/admin'
+export const LOGIN_ROUTE = '/login'
+export const SETTINGS_ROUTE = '/settings'
+export const SHIFTS_ROUTE = '/shifts'
+export const WORKERS_ROUTE = '/workers'
+export const REGISTRATION_ROUTE = '/registration'
