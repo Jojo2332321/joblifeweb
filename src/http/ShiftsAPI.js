@@ -86,9 +86,10 @@ export const fetchWorker = async () =>
 
 export const createShift = async (shift)=>
 {
-    const data = await $host.post('api/shifts')
+    const {data} = await $host.post('api/shifts', shift)
     return data
 }
+
 export const fetchShift = async () =>
 {
     const {data} = await $host.get('api/shifts')

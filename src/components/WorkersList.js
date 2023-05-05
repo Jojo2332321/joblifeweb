@@ -1,5 +1,5 @@
 import {observer} from "mobx-react-lite";
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Context} from "../index";
 import {Button, Table} from "react-bootstrap";
 import {fetchCompanyType, fetchWorker, deleteWorker, fetchWorkPermit, fetchWorkStatus} from "../http/ShiftsAPI";
@@ -9,7 +9,7 @@ const WorkersList = observer(() => {
 
     useEffect(()=>{
         fetchWorker().then(data =>shifts.setWorker(data))
-        fetchWorkPermit().then(data =>shifts.setWorkerPermirI(data))
+        fetchWorkPermit().then(data =>shifts.setWorkerPermir(data))
         fetchWorkStatus().then(data =>shifts.setWorkerStatus(data))
     },[])
 
@@ -22,7 +22,6 @@ const WorkersList = observer(() => {
             console.error('Error deleting worker:', error);
         }
     };
-
 
 
     return (

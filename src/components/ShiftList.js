@@ -1,14 +1,21 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import WorkerCard from './WorkerCard';
 import {Context} from "../index";
-
 import {observer} from "mobx-react-lite";
-
-const ShiftList = observer(({ workers }) => {
+import {fetchShift, fetchWorker} from "../http/ShiftsAPI";
+const ShiftList = observer(() => {
     const {shifts}=useContext(Context)
-    const handleDelete = (workerId) => {
+    useEffect(()=>{
+        fetchWorker().then(data =>shifts.setWorker(data))
+        fetchShift().then(data=>shifts.setShift(data))
+    },[])
+
+
+
+    const Delete = (workerId) => {
         // логика удаления работника
     };
+
 
     return (
         <div>
@@ -17,7 +24,7 @@ const ShiftList = observer(({ workers }) => {
                     key={worker.id}
                     firstName={worker.firstname}
                     surname ={worker.surname}
-                    onDelete={() => handleDelete(worker.id)}
+                    onDelete={() => Delete(worker.id)}
                 />
             ))}
         </div>

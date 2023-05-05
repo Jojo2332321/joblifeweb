@@ -1,19 +1,39 @@
 import React, {useContext, useEffect, useState} from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import {fetchCompanyType, fetchPositions, fetchWorker, fetchWorkHourTemplates} from "../http/ShiftsAPI";
+import {createShift, fetchCompanyType, fetchPositions, fetchWorker, fetchWorkHourTemplates} from "../http/ShiftsAPI";
 import {Context} from "../index";
 import Select from 'react-select';
-const CreateShifts = ({show, onHide}) => {
+const CreateShifts = ({show, onHide, data}) => {
     const {shifts}=useContext(Context)
-    const [selectedEmployee, setSelectedEmployee] = useState("");
-    const [selectedPosition, setSelectedPosition] = useState("");
-    const [selectedShift, setSelectedShift] = useState("");
-
     useEffect(()=>{
         fetchPositions().then(data =>shifts.setPositions(data));
         fetchWorker().then(data =>shifts.setWorker(data))
         fetchWorkHourTemplates().then(data =>shifts.setWorkHourTemplates(data))
     },[])
+
+    const [selectedEmployee, setSelectedEmployee] = useState("");
+    const [selectedPosition, setSelectedPosition] = useState("");
+    const [selectedShift, setSelectedShift] = useState("");
+
+
+    const [startData, setStartData] = useState('')
+    const addShift = () =>{
+        const formData = new FormData()
+        /*TODO*/
+        formData.append("workersShiftId", selectedEmployee);
+        formData.append("positionId", selectedPosition);
+        formData.append("workHourTemplateId", selectedShift);
+        formData.append("startDate", data);
+
+        createShift(formData).then(data => {
+            setSelectedEmployee("");
+            setSelectedPosition("");
+            setSelectedShift("");
+            setStartData("");
+            onHide();
+        })
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(`Employee: ${selectedEmployee}, Position: ${selectedPosition}, Shift: ${selectedShift}`);
@@ -22,7 +42,7 @@ const CreateShifts = ({show, onHide}) => {
     return (
         <Modal show={show} onHide={onHide} centered>
             <Modal.Header closeButton>
-                <Modal.Title>Select Employee, Position, and Shift for</Modal.Title>
+                <Modal.Title>Add Shift</Modal.Title>
             </Modal.Header>
             <Modal.Body>
 

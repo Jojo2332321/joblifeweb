@@ -1,9 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Button, Col, Container, Row} from "react-bootstrap";
 import CompanysBar from "../components/CompanysBar";
-import WorkersListInShifts from "../components/WorkersListInShifts";
-import ShiftsFiltr from "../components/ShiftsFiltr";
-
 import {observer} from "mobx-react-lite";
 import {Context} from "../index";
 import {fetchCompanys} from "../http/ShiftsAPI";
@@ -49,7 +46,7 @@ const Shifts = observer(() => {
                     <Row>
                     <Button className="mt-2" variant="outline-primary" onClick={()=> setCteateShiftModal(true)}>Add a shift</Button>
                     <Button className="mt-2" variant="outline-primary">Add sfifts</Button>
-                    <CreateShifts show={createShiftModal} onHide={()=> setCteateShiftModal(false)}/>
+                    <CreateShifts show={createShiftModal} onHide={()=> setCteateShiftModal(false)} data={selectData}/>
                         <hr/>
                         <Button className="mt-2" variant="outline-primary">Shift export</Button>
                         <Button className="mt-2" variant="outline-primary">Shift import</Button>
