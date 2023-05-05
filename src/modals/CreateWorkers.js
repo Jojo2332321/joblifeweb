@@ -1,25 +1,32 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
-import {createCompanys, createWorker} from "../http/ShiftsAPI";
+import {createCompanys, createWorker, fetchCompanyType, fetchWorkPermit, fetchWorkStatus} from "../http/ShiftsAPI";
+import {Context} from "../index";
 
 const CreateWorkers = ({show, onHide}) => {
+    const {shifts}=useContext(Context)
+    useEffect(()=>{
+        fetchWorkPermit().then(data =>shifts.setWorkerPermir(data))
+        fetchWorkStatus().then(data =>shifts.setWorkerStatus(data))
+    },[])
+
     const [firstname, setFirstname] = useState('')
     const [surname,setSurname] = useState('')
-    const [workPermit,setWorkPermit] = useState('')
     const [number, setNumber] = useState('')
     const [age, setAge] = useState('')
     const [citizenship , setCitizenship] = useState('')
     const [workStatus, setWorkStatus ] = useState('')
-
+    const [workPermit,setWorkPermit] = useState('')
     const addWorker = () =>{
-        createWorker(({
-            firstname:firstname,
-            surname:surname,
-            work_permit:workPermit,
-            number:number,
-            age:age,
-            citizenship:citizenship,
-            work_status:workStatus})).then(data =>{
+        const formData = new FormData()
+            formData.append('firstname', firstname)
+            formData.append('surname', surname,)
+            formData.append('workPermitId', workPermit,)
+            formData.append('number', number,)
+            formData.append('age', age,)
+            formData.append('citizenship', citizenship,)
+            formData.append('workStatusId', workStatus)
+        createWorker(formData).then(data =>{
                 setFirstname('')
                 setSurname ('')
                 setWorkPermit ('')
@@ -30,6 +37,14 @@ const CreateWorkers = ({show, onHide}) => {
                 onHide()
         })
     }
+
+    const ChangeWorkStatus = (event) => {
+        setWorkStatus(event.target.value);
+    };
+    const ChangeWorkPermit = (event) => {
+        setWorkPermit(event.target.value);
+    };
+
 
     return (
 
@@ -58,11 +73,6 @@ const CreateWorkers = ({show, onHide}) => {
                         className="mt-2"
                         placeholder={"Enter worker's surname"}/>
                     <Form.Control
-                        value={workPermit}
-                        onChange={e=> setWorkPermit(e.target.value)}
-                        className="mt-2"
-                        placeholder={"Enter worker's work_permit"}/>
-                    <Form.Control
                         value={number}
                         onChange={e=> setNumber(e.target.value)}
                         className="mt-2"
@@ -77,11 +87,19 @@ const CreateWorkers = ({show, onHide}) => {
                         onChange={e=> setCitizenship(e.target.value)}
                         className="mt-2"
                         placeholder={"Enter worker's citizenship"}/>
-                    <Form.Control
-                        value={workStatus}
-                        onChange={e=> setWorkStatus(e.target.value)}
-                        className="mt-2"
-                        placeholder={"Enter worker's work_status"}/>
+
+                    <Form.Select className="mt-2" aria-label="Default select example" value={workPermit} onChange={ChangeWorkPermit}>
+                        <option>Select Permit</option>
+                        {shifts.workerPermit.map(workerPermit =>
+                            <option key={workerPermit.id} value={workerPermit.id}>{workerPermit.name}</option>
+                        )}
+                    </Form.Select>
+                    <Form.Select className="mt-2" aria-label="Default select example" value={workStatus} onChange={ChangeWorkStatus}>
+                        <option>Select Status</option>
+                        {shifts.workerStatus.map(workerStatus =>
+                            <option key={workerStatus.id} value={workerStatus.id}>{workerStatus.name}</option>
+                        )}
+                    </Form.Select>
                 </Form>
             </Modal.Body>
             <Modal.Footer>

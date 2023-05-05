@@ -5,11 +5,7 @@ import WorkersList from "../components/WorkersList";
 import CreateWorkers from "../modals/CreateWorkers";
 
 const Workers = ({show, onHide}) => {
-
-
-
     const [workersModal, setWorkersModal] = useState(false)
-
     return (
         <div>
             <Row>

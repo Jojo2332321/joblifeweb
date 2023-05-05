@@ -1,7 +1,5 @@
 import React, {useContext} from 'react';
-import {Routes, Route ,Redirect} from 'react-router-dom'
-import {authRoutes} from "../routes";
-import {publicRoutes} from "../routes";
+import {Routes, Route } from 'react-router-dom'
 import Admin from "../pages/Admin";
 import Settings from "../pages/Settings";
 import Shifts from "../pages/Shifts";
@@ -16,7 +14,7 @@ const AppRouter = () => {
             <Routes>
 {/*              НАДО СДЕЛВТЬ ЧЕРЕЗ МАССИВ... ТАК ТУПо и даже не законно
 
-                {is Auth && authRoutes.map(({path,Component}) =>
+                {isAuth && authRoutes.map(({path,Component}) =>
                     <Route key={path} path={path} element={<Component/>} exact/>
                 )}
                 {publicRoutes.map(({path,Component}) =>

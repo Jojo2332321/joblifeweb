@@ -7,6 +7,7 @@ import CreateComapanyTyp from "../modals/CreateComapanyTyp";
 import {Context} from "../index";
 import CreateWorkHourTemplates from "../modals/CreateWorkHourTemplates";
 import WorkPermitModal from "../modals/WorkPermitModal";
+import CreateWorkStatusModal from "../modals/CreateWorkStatusModal";
 
 const Settings = () => {
     const {user} = useContext(Context)
@@ -16,6 +17,7 @@ const Settings = () => {
     const [companyTypeModal, setCompanyTypeModal] = useState(false)
     const [timeModal, setTimeModal] = useState(false)
     const [workPermit, setWorkPermit] = useState(false)
+    const [workStatus, setWorkStatus] = useState(false)
 
     const userId = user.userId
 
@@ -29,20 +31,23 @@ const Settings = () => {
                     <Button className="mt-2 p-2 w-auto" variant={"outline-dark"} onClick={()=> setCompanysModal(true)}>Add Company</Button>
                     <Button className="mt-2 p-2 w-auto" variant={"outline-dark"} onClick={()=> setPositionModal(true)}>Add Position</Button>
                     <Button className="mt-2 p-2 w-auto" variant={"outline-dark"} onClick={()=> setTimeModal(true)}>Time</Button>
-                    <Button className="mt-2 p-2 w-auto" variant={"outline-dark"} onClick={()=> setWorkPermit(true)}>Worker Options</Button>
+                    <Button className="mt-2 p-2 w-auto" variant={"outline-dark"} onClick={()=> setWorkPermit(true)}>Worker Permit</Button>
+                    <Button className="mt-2 p-2 w-auto" variant={"outline-dark"} onClick={()=> setWorkStatus(true)}>Worker Status</Button>
 
                     <CreateCompanys show={companysModal} onHide={()=> setCompanysModal(false)}/>
                     <CreatePositio show={positionModal} onHide={()=> setPositionModal(false)}/>
                     <CreateComapanyTyp show={companyTypeModal} onHide={()=> setCompanyTypeModal(false)}/>
                     <CreateWorkHourTemplates show={timeModal} onHide={()=> setTimeModal(false)}/>
                     <WorkPermitModal show={workPermit} onHide={() => setWorkPermit(false)}/>
+                    <CreateWorkStatusModal show={workStatus} onHide={() => setWorkStatus(false)}/>
                 </Col>
                 <Col className="d-flex flex-column">
                     <Button className="mt-2 p-2 w-auto" variant={"dark"}>company types list</Button>
                     <Button className="mt-2 p-2 w-auto" variant={"dark"}>list of companies</Button>
                     <Button className="mt-2 p-2 w-auto" variant={"dark"}>position list</Button>
                     <Button className="mt-2 p-2 w-auto" variant={"dark"}>Time list</Button>
-                    <Button className="mt-2 p-2 w-auto" variant={"dark"}>Worker Options list</Button>
+                    <Button className="mt-2 p-2 w-auto" variant={"dark"}>Worker Permit list</Button>
+                    <Button className="mt-2 p-2 w-auto" variant={"dark"} >Worker Status List</Button>
                 </Col>
                 <Col className="d-flex flex-column">
                 </Col>

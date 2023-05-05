@@ -2,7 +2,7 @@ import {$authHost, $host} from "./index";
 export const createCompanys= async (companys) =>
 {
     const {data} = await $host.post('api/companys', companys)
-    return data
+    return data;
 }
 
 export const fetchCompanys = async () =>
@@ -48,9 +48,22 @@ return data
 }
 export const createWorkPermit=async (workPermit) =>
 {
-    const {data} = await $host.post('api/workStatus', workPermit)
+    const {data} = await $host.post('api/workPermit', workPermit)
     return data
 }
+
+export const fetchWorkPermit=async () =>
+{
+    const {data} = await $host.get('api/workPermit')
+    return data
+}
+
+export const fetchWorkStatus=async () =>
+{
+    const {data} = await $host.get('api/workStatus')
+    return data
+}
+
 
 
 export const fetchPositions = async () =>

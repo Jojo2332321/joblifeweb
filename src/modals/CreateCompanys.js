@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, Form, Modal} from "react-bootstrap";
+import {Button, Dropdown, Form, Modal} from "react-bootstrap";
 import {createCompanys, fetchCompanys, fetchCompanyType} from "../http/ShiftsAPI";
 import {Context} from "../index";
 
@@ -9,9 +9,13 @@ const CreateCompanys = ({show, onHide}) => {
     const [type, setType]= useState('')
     const [selectedType, setSelectedType] = useState('');
     const addCompanys = () =>{
-        createCompanys(({name:name, type:selectedType})).then(data =>{
+        const formData = new FormData()
+            formData.append('name',name)
+            formData.append('companyTypeId',selectedType)
+
+        createCompanys(formData).then(data =>{
+            setSelectedType('')
             setName('')
-            setType('')
             onHide()
         })
     }
@@ -46,12 +50,13 @@ const CreateCompanys = ({show, onHide}) => {
                     />
 
                 </Form>
-                    <Form.Select className="mt-2" aria-label="Default select example" value={selectedType} onChange={Change}>
-                        <option>Select type</option>
-                        {shifts.companyType.map(companyType =>
+                <Form.Select className="mt-2" aria-label="Default select example" value={selectedType} onChange={Change}>
+                    <option>Select type</option>
+                    {shifts.companyType.map(companyType =>
                         <option key={companyType.id} value={companyType.id}>{companyType.name}</option>
-                            )}
-                    </Form.Select>
+                    )}
+                </Form.Select>
+
 
             </Modal.Body>
             <Modal.Footer>

@@ -13,10 +13,11 @@ export default class ShiftsM{
             {id:5, firstname:"Popouseka", surname:"Volnistova", work_permit:"Student", number:"11111", age:"55", citizenship:"Ukr", work_status:23}*/
         ]
 
-        this._seelectedCopanys={}
+        this._seelectedCopanys=[]
         this._shift = []
         this._workHourTemplates = []
-
+        this._permit = []
+        this._status = []
         makeAutoObservable(this)
     }
 
@@ -68,5 +69,20 @@ export default class ShiftsM{
     get companyType(){
         return this._companyType
     }
+    setWorkerPermir(workPermit){
+        this._permit = workPermit
+    }
+
+    get workerPermit(){
+        return this._permit
+    }
+    setWorkerStatus(workerStatus){
+        this._status = workerStatus
+    }
+
+    get workerStatus(){
+        return this._status
+    }
+
 
 }
