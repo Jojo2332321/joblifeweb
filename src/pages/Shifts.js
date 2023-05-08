@@ -8,6 +8,7 @@ import data from "bootstrap/js/src/dom/data";
 import ShiftList from "../components/ShiftList";
 import Calendar from "../components/Calendar";
 import CreateShifts from "../modals/CreateShifts";
+import DatePicker from "react-datepicker";
 
 
 
@@ -15,23 +16,33 @@ const Shifts = observer(() => {
     const {shifts} = useContext(Context)
 
     const [createShiftModal, setCteateShiftModal] = useState(false);
-    const [selectData, setSelectData] = useState('');
+    const [selectData, setSelectData] = useState(new Date());
     useEffect(()=>{
         fetchCompanys().then(data =>shifts.setCompanys(data))
     },[])
 
+    useEffect(() => {
+        console.log(selectData);
+    }, [selectData]);
     const handleDateChange = (date) => {
-        setSelectData(date)
+        setSelectedDate(date);
+        setSelectData(date);
+    };
+    const [selectedDate, setSelectedDate] = useState(new Date());
+
+    const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+    const handleCompanySelected = (companyId) => {
+        console.log("Выбранная компания:", companyId);
+        setSelectedCompanyId(companyId);
+
     };
 
     return (
 
         <Container>
-
-
             <Row>
                 <Col md={2}>
-                    <CompanysBar/>
+                    <CompanysBar onCompanySelected={handleCompanySelected}/>
                 </Col>
 
                 <Col md={8}>
@@ -40,13 +51,20 @@ const Shifts = observer(() => {
 
                 <Col md={2}>
                     <Row className="mt-2">
-                    <Calendar onDateChange={handleDateChange} />
+
+                            <DatePicker
+                                selected={selectedDate}
+                                onChange={handleDateChange}
+                                dateFormat="dd-MM-yyyy"
+                                placeholderText="Select a date"
+                            />
+
                     </Row>
                     <hr/>
                     <Row>
                     <Button className="mt-2" variant="outline-primary" onClick={()=> setCteateShiftModal(true)}>Add a shift</Button>
                     <Button className="mt-2" variant="outline-primary">Add sfifts</Button>
-                    <CreateShifts show={createShiftModal} onHide={()=> setCteateShiftModal(false)} data={selectData}/>
+                    <CreateShifts show={createShiftModal} onHide={()=> setCteateShiftModal(false)} date={selectData} company={selectedCompanyId}/>
                         <hr/>
                         <Button className="mt-2" variant="outline-primary">Shift export</Button>
                         <Button className="mt-2" variant="outline-primary">Shift import</Button>
@@ -54,7 +72,9 @@ const Shifts = observer(() => {
 
                 </Col>
             </Row>
+
         </Container>
+
     );
 });
 

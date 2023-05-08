@@ -37,7 +37,7 @@ export const fetchWorkHourTemplates = async () =>
 
 export const createPositions= async (positions) =>
 {
-    const {data} = await $host.post('api/companys', positions)
+    const {data} = await $host.post('api/positions', positions)
     return data
 }
 
