@@ -14,8 +14,9 @@ import {format} from 'date-fns';
 import data from "bootstrap/js/src/dom/data";
 
 
-const CreateShifts = ({show, onHide, date}) => {
+const CreateShifts = ({show, onHide, date, userid}) => {
     const {shifts}=useContext(Context)
+    const {user}=useContext(Context)
     const  isoString = date.toISOString();
     useEffect(()=>{
         fetchPositions().then(data =>shifts.setPositions(data));
@@ -23,7 +24,6 @@ const CreateShifts = ({show, onHide, date}) => {
         fetchWorkHourTemplates().then(data =>shifts.setWorkHourTemplates(data))
         fetchCompanys().then(data => shifts.setCompanys(data))
     },[])
-
 
     const [selectedEmployee, setSelectedEmployee] = useState("");
     const [selectedPosition, setSelectedPosition] = useState("");
@@ -37,6 +37,7 @@ const CreateShifts = ({show, onHide, date}) => {
         formData.append("workHourTemplateId", selectedShift);
         formData.append("startDate", isoString);
         formData.append("companyId", selectedCompany)
+        formData.append("userid", localStorage.getItem('userId'))
 
         createShift(formData).then(data => {
             setSelectedEmployee("");
@@ -49,7 +50,7 @@ const CreateShifts = ({show, onHide, date}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(`Employee: ${selectedEmployee}, Position: ${selectedPosition}, Shift: ${selectedShift}`);
+/*        console.log(`Employee: ${selectedEmployee}, Position: ${selectedPosition}, Shift: ${selectedShift}`);*/
     };
 
     return (

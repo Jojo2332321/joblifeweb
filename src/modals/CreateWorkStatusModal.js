@@ -6,7 +6,7 @@ const CreateWorkStatusModal = ({ show, onHide }) => {
     const [workStatusName, setWorkStatusName] = useState('');
 
     const addWorkStatus = () => {
-        createWorkStatus({ name: workStatusName }).then(() => {
+        createWorkStatus({ name: workStatusName, userid: localStorage.getItem('userId') }).then(() => {
             setWorkStatusName('');
             onHide();
         });

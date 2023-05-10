@@ -5,7 +5,7 @@ import {createCompanys, createPositions} from "../http/ShiftsAPI";
 const CreatePositio = ({show, onHide}) => {
     const [name,setName] = useState('')
     const addPositions = () =>{
-        createPositions(({name:name})).then(data =>{
+        createPositions(({name:name, userid: localStorage.getItem('userId')})).then(data =>{
             setName('')
             onHide()
         })

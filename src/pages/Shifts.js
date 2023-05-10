@@ -14,6 +14,7 @@ import DatePicker from "react-datepicker";
 
 const Shifts = observer(() => {
     const {shifts} = useContext(Context)
+    const {user} = useContext(Context)
 
     const [createShiftModal, setCteateShiftModal] = useState(false);
     const [selectData, setSelectData] = useState(new Date());
@@ -22,7 +23,6 @@ const Shifts = observer(() => {
     },[])
 
     useEffect(() => {
-        console.log(selectData);
     }, [selectData]);
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -32,10 +32,9 @@ const Shifts = observer(() => {
 
     const [selectedCompanyId, setSelectedCompanyId] = useState(null);
     const handleCompanySelected = (companyId) => {
-        console.log("Выбранная компания:", companyId);
         setSelectedCompanyId(companyId);
-
     };
+
 
     return (
 
@@ -64,10 +63,15 @@ const Shifts = observer(() => {
                     <Row>
                     <Button className="mt-2" variant="outline-primary" onClick={()=> setCteateShiftModal(true)}>Add a shift</Button>
                     <Button className="mt-2" variant="outline-primary">Add sfifts</Button>
-                    <CreateShifts show={createShiftModal} onHide={()=> setCteateShiftModal(false)} date={selectData} company={selectedCompanyId}/>
+                    <CreateShifts
+                        show={createShiftModal}
+                        onHide={()=> setCteateShiftModal(false)}
+                        date={selectData}
+                        company={selectedCompanyId}
+                    />
                         <hr/>
                         <Button className="mt-2" variant="outline-primary">Shift export</Button>
-                        <Button className="mt-2" variant="outline-primary">Shift import</Button>
+                        <Button className="mt-2" variant="outline-primary" >Shift import</Button>
                     </Row>
 
                 </Col>

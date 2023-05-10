@@ -9,7 +9,7 @@ const CreateWorkHourTemplates = ({show, onHide}) => {
     const [endTime, setEndTime] = useState('')
 
     const addTemplate = () => {
-        createWorkHourTemplates({name, description, startTime, endTime}).then(data => {
+        createWorkHourTemplates({name, description, startTime, endTime, userid: localStorage.getItem('userId')}).then(data => {
             setName('')
             setDescription('')
             setStartTime('')

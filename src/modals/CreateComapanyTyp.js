@@ -6,7 +6,7 @@ const CreateComapanyTyp = ({show, onHide}) => {
     const [name, setName]= useState('')
     const addCompanyType = () =>{
 
-        createCompanyType(({name:name})).then(data =>{
+        createCompanyType(({name:name,userid: localStorage.getItem('userId')})).then(data =>{
             setName('')
             onHide()
         })

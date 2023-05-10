@@ -9,6 +9,7 @@ const CreateModal = ({ show, onHide }) => {
     const addWorkPermit = () => {
         const formData = new FormData();
         formData.append('name', workPermitName);
+        formData.append('userid',localStorage.getItem('userId'));
         createWorkPermit(formData).then(() => {
             setWorkPermitName('');
             onHide();

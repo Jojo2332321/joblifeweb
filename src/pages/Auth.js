@@ -25,6 +25,7 @@ const Auth = observer(() => {
 
         user.setUser(data)
         user.setIsAuth(true)
+        localStorage.setItem('userId', user.userId);
         navigate(SHIFTS_ROUTE)
     }catch (e){
         alert(e.response.data.message)

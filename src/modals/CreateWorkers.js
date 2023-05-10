@@ -26,6 +26,7 @@ const CreateWorkers = ({show, onHide}) => {
             formData.append('age', age,)
             formData.append('citizenship', citizenship,)
             formData.append('workStatusId', workStatus)
+            formData.append('userid', localStorage.getItem('userId'))
         createWorker(formData).then(data =>{
                 setFirstname('')
                 setSurname ('')

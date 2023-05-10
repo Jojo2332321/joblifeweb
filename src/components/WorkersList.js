@@ -23,6 +23,9 @@ const WorkersList = observer(() => {
         }
     };
 
+    const userId = parseInt(localStorage.getItem('userId'));
+    const filteredWorkers = shifts.worker.filter(worker => worker.userid === userId);
+
 
     return (
         <Table className="mt-2" striped bordered hover >
@@ -39,7 +42,7 @@ const WorkersList = observer(() => {
             </tr>
             </thead>
             <tbody>
-            {shifts.worker.map((worker) => {
+            {filteredWorkers.map((worker) => {
                 const workPermit = shifts.workerPermit.find((permit) => permit.id === worker.workPermitId);
                 const workStatus = shifts.workerStatus.find((status) => status.id === worker.workStatusId);
 
@@ -66,3 +69,5 @@ const WorkersList = observer(() => {
 });
 
 export default WorkersList;
+
+localStorage.getItem('userId')

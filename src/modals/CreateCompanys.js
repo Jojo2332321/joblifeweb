@@ -12,6 +12,7 @@ const CreateCompanys = ({show, onHide}) => {
         const formData = new FormData()
             formData.append('name',name)
             formData.append('companyTypeId',selectedType)
+            formData.append('userid', localStorage.getItem('userId'))
 
         createCompanys(formData).then(data =>{
             setSelectedType('')
