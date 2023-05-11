@@ -8,7 +8,7 @@ import {Context} from "./index";
 import {check} from "./http/userAPI";
 import data from "bootstrap/js/src/dom/data";
 import {Spinner} from "react-bootstrap";
-
+//
 
 
 const App = observer(() =>{
