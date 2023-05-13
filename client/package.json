@@ -21,10 +21,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "C:/Users/melya/WebstormProjects/joblifeweb/client/client/node_modules/.bin/react-scripts start",
-    "build": "C:/Users/melya/WebstormProjects/joblifeweb/client/client/node_modules/.bin/react-scripts build",
-    "test": "C:/Users/melya/WebstormProjects/joblifeweb/client/client/node_modules/.bin/react-scripts test",
-    "eject": "C:/Users/melya/WebstormProjects/joblifeweb/client/client/node_modules/.bin/react-scripts eject"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -46,7 +46,9 @@
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  },
   "author": "",
   "license": "ISC"
 }
