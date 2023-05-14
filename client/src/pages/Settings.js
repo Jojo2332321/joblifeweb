@@ -8,18 +8,12 @@ import {Context} from "../index";
 import CreateWorkHourTemplates from "../modals/CreateWorkHourTemplates";
 import WorkPermitModal from "../modals/WorkPermitModal";
 import CreateWorkStatusModal from "../modals/CreateWorkStatusModal";
+import ButtonBarCreateInSetting from "../components/ButtonBarCreateInSetting";
+import ButtonBarListInSetting from "../components/ButtonBarListInSetting";
+import {observer} from "mobx-react-lite";
 
-const Settings = () => {
-    const {user} = useContext(Context)
+const Settings = observer(() => {
 
-    const [companysModal, setCompanysModal] = useState(false)
-    const [positionModal, setPositionModal] = useState(false)
-    const [companyTypeModal, setCompanyTypeModal] = useState(false)
-    const [timeModal, setTimeModal] = useState(false)
-    const [workPermit, setWorkPermit] = useState(false)
-    const [workStatus, setWorkStatus] = useState(false)
-
-    const userId = user.userId
 
     return (
         <Container className>
@@ -27,27 +21,10 @@ const Settings = () => {
                 <Col className="d-flex flex-column">
                 </Col>
                 <Col className="d-flex flex-column">
-                    <Button className="mt-2 p-2 w-auto" variant={"outline-dark"} onClick={()=> setCompanyTypeModal(true)}>Add company type</Button>
-                    <Button className="mt-2 p-2 w-auto" variant={"outline-dark"} onClick={()=> setCompanysModal(true)}>Add Company</Button>
-                    <Button className="mt-2 p-2 w-auto" variant={"outline-dark"} onClick={()=> setPositionModal(true)}>Add Position</Button>
-                    <Button className="mt-2 p-2 w-auto" variant={"outline-dark"} onClick={()=> setTimeModal(true)}>Time</Button>
-                    <Button className="mt-2 p-2 w-auto" variant={"outline-dark"} onClick={()=> setWorkPermit(true)}>Worker Permit</Button>
-                    <Button className="mt-2 p-2 w-auto" variant={"outline-dark"} onClick={()=> setWorkStatus(true)}>Worker Status</Button>
-
-                    <CreateCompanys show={companysModal} onHide={()=> setCompanysModal(false)}/>
-                    <CreatePositio show={positionModal} onHide={()=> setPositionModal(false)}/>
-                    <CreateComapanyTyp show={companyTypeModal} onHide={()=> setCompanyTypeModal(false)}/>
-                    <CreateWorkHourTemplates show={timeModal} onHide={()=> setTimeModal(false)}/>
-                    <WorkPermitModal show={workPermit} onHide={() => setWorkPermit(false)}/>
-                    <CreateWorkStatusModal show={workStatus} onHide={() => setWorkStatus(false)}/>
+                    <ButtonBarCreateInSetting/>
                 </Col>
                 <Col className="d-flex flex-column">
-                    <Button className="mt-2 p-2 w-auto" variant={"dark"}>company types list</Button>
-                    <Button className="mt-2 p-2 w-auto" variant={"dark"}>list of companies</Button>
-                    <Button className="mt-2 p-2 w-auto" variant={"dark"}>position list</Button>
-                    <Button className="mt-2 p-2 w-auto" variant={"dark"}>Time list</Button>
-                    <Button className="mt-2 p-2 w-auto" variant={"dark"}>Worker Permit list</Button>
-                    <Button className="mt-2 p-2 w-auto" variant={"dark"} >Worker Status List</Button>
+                    <ButtonBarListInSetting/>
                 </Col>
                 <Col className="d-flex flex-column">
                 </Col>
@@ -55,6 +32,6 @@ const Settings = () => {
         </Container>
 
     );
-};
+});
 
 export default Settings;

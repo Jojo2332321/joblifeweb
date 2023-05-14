@@ -26,4 +26,6 @@ class CompanysController {
     }
 }
 
+
+
 module.exports =new CompanysController()

@@ -1,11 +1,12 @@
 import {observer} from "mobx-react-lite";
 import React, {useContext, useEffect, useState} from "react";
 import {Context} from "../index";
-import {Button, Table} from "react-bootstrap";
+import {Button, Form, Table} from "react-bootstrap";
 import {fetchCompanyType, fetchWorker, deleteWorker, fetchWorkPermit, fetchWorkStatus} from "../http/ShiftsAPI";
 
 const WorkersList = observer(() => {
     const {shifts}=useContext(Context)
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(()=>{
         fetchWorker().then(data =>shifts.setWorker(data))
@@ -24,47 +25,61 @@ const WorkersList = observer(() => {
     };
 
     const userId = parseInt(localStorage.getItem('userId'));
-    const filteredWorkers = shifts.worker.filter(worker => worker.userid === userId);
+    /*const filteredWorkers = shifts.worker.filter(worker => worker.userid === userId);*/
 
+    const filteredWorkers = shifts.worker.filter(worker =>
+        worker.userid === userId &&
+        (worker.firstname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            worker.surname.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
 
     return (
-        <Table className="mt-2" striped bordered hover >
-            <thead>
-            <tr>
-                <th>firstname</th>
-                <th>surname</th>
-                <th>age</th>
-                <th>citizenship</th>
-                <th>number</th>
-                <th>work_permit</th>
-                <th>work_status</th>
+        <>
+            <Form className="mt-2">
+                <Form.Control
+                    placeholder="Hledani"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </Form>
 
-            </tr>
-            </thead>
-            <tbody>
-            {filteredWorkers.map((worker) => {
-                const workPermit = shifts.workerPermit.find((permit) => permit.id === worker.workPermitId);
-                const workStatus = shifts.workerStatus.find((status) => status.id === worker.workStatusId);
+            <Table className="mt-2" striped bordered hover>
+                <thead>
+                <tr>
+                    <th>firstname</th>
+                    <th>surname</th>
+                    <th>age</th>
+                    <th>citizenship</th>
+                    <th>number</th>
+                    <th>work_permit</th>
+                    <th>work_status</th>
+                </tr>
+                </thead>
+                <tbody>
+                {filteredWorkers.map((worker) => {
+                    const workPermit = shifts.workerPermit.find((permit) => permit.id === worker.workPermitId);
+                    const workStatus = shifts.workerStatus.find((status) => status.id === worker.workStatusId);
 
-                return (
-                    <tr key={worker.id}>
-                        <td>{worker.firstname}</td>
-                        <td>{worker.surname}</td>
-                        <td>{worker.age}</td>
-                        <td>{worker.citizenship}</td>
-                        <td>{worker.number}</td>
-                        <td>{workPermit ? workPermit.name : "N/A"}</td>
-                        <td>{workStatus ? workStatus.name : "N/A"}</td>
-                        <td className="text-center">
-                            <Button variant="outline-danger" onClick={() => Delete(worker.id)}>
-                                Delete
-                            </Button>
-                        </td>
-                    </tr>
-                );
-            })}
-            </tbody>
-        </Table>
+                    return (
+                        <tr key={worker.id}>
+                            <td>{worker.firstname}</td>
+                            <td>{worker.surname}</td>
+                            <td>{worker.age}</td>
+                            <td>{worker.citizenship}</td>
+                            <td>{worker.number}</td>
+                            <td>{workPermit ? workPermit.name : "N/A"}</td>
+                            <td>{workStatus ? workStatus.name : "N/A"}</td>
+                            <td className="text-center">
+                                <Button variant="outline-danger" onClick={() => Delete(worker.id)}>
+                                    Delete
+                                </Button>
+                            </td>
+                        </tr>
+                    );
+                })}
+                </tbody>
+            </Table>
+        </>
     );
 });
 

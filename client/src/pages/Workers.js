@@ -12,11 +12,6 @@ const Workers = ({show, onHide}) => {
                 <Col md={2}>
                 </Col>
                 <Col md={8}>
-                    <Form className="mt-2">
-                        <Form.Control
-                            placeholder={"Hledani"}
-                        />
-                    </Form>
                     <WorkersList/>
                 </Col>
                 <Col md={1}>

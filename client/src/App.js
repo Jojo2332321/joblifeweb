@@ -1,14 +1,14 @@
 import {BrowserRouter, useNavigate} from "react-router-dom";
 import AppRouter from "./components/AppRouter";
 import NavBar from "./components/NavBar";
-
+import React from "react";
 import {observer} from "mobx-react-lite";
 import {useContext, useEffect, useState} from "react";
 import {Context} from "./index";
 import {check} from "./http/userAPI";
 import data from "bootstrap/js/src/dom/data";
 import {Spinner} from "react-bootstrap";
-//
+
 
 
 const App = observer(() =>{

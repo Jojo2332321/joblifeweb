@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import {Modal, Button, Form} from "react-bootstrap";
 import {
     createShift,
     fetchCompanys,
@@ -15,42 +15,48 @@ import data from "bootstrap/js/src/dom/data";
 
 
 const CreateShifts = ({show, onHide, date, userid}) => {
-    const {shifts}=useContext(Context)
-    const {user}=useContext(Context)
-    const  isoString = date.toISOString();
-    useEffect(()=>{
-        fetchPositions().then(data =>shifts.setPositions(data));
-        fetchWorker().then(data =>shifts.setWorker(data))
-        fetchWorkHourTemplates().then(data =>shifts.setWorkHourTemplates(data))
+    const {shifts} = useContext(Context)
+
+    const isoString = date.toISOString();
+    useEffect(() => {
+        fetchPositions().then(data => shifts.setPositions(data));
+        fetchWorker().then(data => shifts.setWorker(data))
+        fetchWorkHourTemplates().then(data => shifts.setWorkHourTemplates(data))
         fetchCompanys().then(data => shifts.setCompanys(data))
-    },[])
+    }, [])
 
     const [selectedEmployee, setSelectedEmployee] = useState("");
     const [selectedPosition, setSelectedPosition] = useState("");
     const [selectedShift, setSelectedShift] = useState("");
     const [selectedCompany, setSelectedCompany] = useState("");
-    const addShift = () =>{
-        const formData = new FormData()
-        /*TODO*/
-        formData.append("workerId", selectedEmployee.value);
-        formData.append("positionId", selectedPosition);
-        formData.append("workHourTemplateId", selectedShift);
-        formData.append("startDate", isoString);
-        formData.append("companyId", selectedCompany)
-        formData.append("userid", localStorage.getItem('userId'))
+    const addShift = () => {
+        const employeeShifts = shifts.shift.filter(shift => shift.workerId === selectedEmployee.value);
+        const shiftOnSelectedDate = employeeShifts.find(shift => new Date(shift.startDate).toDateString() === date.toDateString());
 
-        createShift(formData).then(data => {
-            setSelectedEmployee("");
-            setSelectedPosition("");
-            setSelectedShift("");
-            setSelectedCompany("");
-            onHide();
-        })
+        if (shiftOnSelectedDate) {
+            alert("The selected employee already has a shift on the selected date.");
+        } else {
+            const formData = new FormData()
+            /*TODO*/
+            formData.append("workerId", selectedEmployee.value);
+            formData.append("positionId", selectedPosition);
+            formData.append("workHourTemplateId", selectedShift);
+            formData.append("startDate", isoString);
+            formData.append("companyId", selectedCompany)
+            formData.append("userid", localStorage.getItem('userId'))
+
+            createShift(formData).then(data => {
+                setSelectedEmployee("");
+                setSelectedPosition("");
+                setSelectedShift("");
+                setSelectedCompany("");
+                onHide();
+            })
+        }
     }
-
     const handleSubmit = (e) => {
         e.preventDefault();
-/*        console.log(`Employee: ${selectedEmployee}, Position: ${selectedPosition}, Shift: ${selectedShift}`);*/
+        /*        console.log(`Employee: ${selectedEmployee}, Position: ${selectedPosition}, Shift: ${selectedShift}`);*/
     };
 
     return (
@@ -65,7 +71,15 @@ const CreateShifts = ({show, onHide, date, userid}) => {
                     <Select
                         value={selectedEmployee}
                         onChange={(selectedOption) => setSelectedEmployee(selectedOption)}
-                        options={shifts.worker.map(item =>({value:item.id, label:`${item.firstname} ${item.surname}`}))} />
+                        options={shifts.worker
+                            .filter(worker => {
+                                const workerShifts = shifts.shift.filter(shift => shift.workerId === worker.id);
+                                const shiftOnSelectedDate = workerShifts.find(shift => new Date(shift.startDate).toDateString() === date.toDateString());
+                                return !shiftOnSelectedDate;
+                            })
+                            .map(worker => ({value: worker.id, label: `${worker.firstname} ${worker.surname}`}))
+                        }
+                    />
 
                     <Form.Group>
                         <Form.Label>Position:</Form.Label>
@@ -74,8 +88,8 @@ const CreateShifts = ({show, onHide, date, userid}) => {
                             onChange={(e) => setSelectedPosition(e.target.value)}
                         >
                             <option value="">Select Position</option>
-                            {shifts.positions.map(position=>
-                            <option key={position.id} value={position.id}> {position.name}</option> )}
+                            {shifts.positions.map(position =>
+                                <option key={position.id} value={position.id}> {position.name}</option>)}
 
                         </Form.Select>
                     </Form.Group>
@@ -87,8 +101,8 @@ const CreateShifts = ({show, onHide, date, userid}) => {
                             onChange={(e) => setSelectedCompany(e.target.value)}
                         >
                             <option value="">Select Company</option>
-                            {shifts.companys.map(companys=>
-                                <option key={companys.id} value={companys.id}> {companys.name}</option> )}
+                            {shifts.companys.map(companys =>
+                                <option key={companys.id} value={companys.id}> {companys.name}</option>)}
 
                         </Form.Select>
                     </Form.Group>
@@ -100,16 +114,17 @@ const CreateShifts = ({show, onHide, date, userid}) => {
                             onChange={(e) => setSelectedShift(e.target.value)}
                         >
                             <option value="">Select Shift</option>
-                            {shifts._workHourTemplates.map(workHourTemplate=>
-                                <option key={workHourTemplate.id} value={workHourTemplate.id}> {workHourTemplate.name}</option> )}
+                            {shifts._workHourTemplates.map(workHourTemplate =>
+                                <option key={workHourTemplate.id}
+                                        value={workHourTemplate.id}> {workHourTemplate.name}</option>)}
                         </Form.Select>
 
                     </Form.Group>
 
                     <div className="d-flex justify-content-end mt-2">
-                    <Button variant="primary" onClick={addShift}>
-                        Add
-                    </Button>
+                        <Button variant="primary" onClick={addShift}>
+                            Add
+                        </Button>
                     </div>
                 </Form>
             </Modal.Body>

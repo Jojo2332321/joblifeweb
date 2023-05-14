@@ -99,4 +99,18 @@ export const fetchShift = async () =>
 export const deleteWorker = async (id) => {
     const response = await $host.delete('api/workers/' + id);
     return response.data;
-};
+}
+
+export const deleteCompanyType = async (id)=> {
+    const response = await $host.delete('api/companyType/' + id);
+    return response.data
+}
+
+export const deleteCompany = async (id)=> {
+    const response = await $host.delete('api/companys/' + id);
+    return response.data
+}
+export const deleteShift = async (id)=> {
+    const response = await $host.delete('api/shifts/' + id);
+    return response.data
+}

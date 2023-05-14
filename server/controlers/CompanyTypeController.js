@@ -1,13 +1,14 @@
 const {CompanyType, User} = require("../models/models");
+
 //
 class CompanyTypeController {
-    async create(req, res){
-        const {name,userid} = req.body
-        const comType = await CompanyType.create({name,userid})
+    async create(req, res) {
+        const {name, userid} = req.body
+        const comType = await CompanyType.create({name, userid})
         return res.json(comType)
     }
 
-    async getAll(req, res){
+    async getAll(req, res) {
         const comType = await CompanyType.findAll()
         return res.json(comType)
     }

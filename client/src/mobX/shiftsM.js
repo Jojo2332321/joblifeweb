@@ -5,14 +5,7 @@ export default class ShiftsM{
         this._companys = []
         this._positions= []
         this._companyType = []
-        this._worker = [
-/*            {id:1, firstname:"Artem", surname:"Kordas", work_permit:"Student", number:"11111", age:"23", citizenship:"Rus", work_status:23},
-            {id:2, firstname:"Oleg", surname:"Nepej", work_permit:"Student", number:"11111", age:"23", citizenship:"Rus", work_status:12},
-            {id:3, firstname:"John", surname:"Borsh", work_permit:"Student", number:"11111", age:"43", citizenship:"Ceh", work_status:12},
-            {id:4, firstname:"Jack", surname:"Syr", work_permit:"Student", number:"11111", age:"55", citizenship:"Indian", work_status:12},
-            {id:5, firstname:"Popouseka", surname:"Volnistova", work_permit:"Student", number:"11111", age:"55", citizenship:"Ukr", work_status:23}*/
-        ]
-
+        this._worker = []
         this._seelectedCopanys=[]
         this._shift = []
         this._workHourTemplates = []
@@ -84,5 +77,8 @@ export default class ShiftsM{
         return this._status
     }
 
+    get workHourTemplates(){
+        return this._workHourTemplates
+    }
 
 }

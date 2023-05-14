@@ -12,7 +12,7 @@ import DatePicker from "react-datepicker";
 
 
 
-const Shifts = observer(() => {
+const Shifts = () => {
     const {shifts} = useContext(Context)
     const {user} = useContext(Context)
 
@@ -45,7 +45,7 @@ const Shifts = observer(() => {
                 </Col>
 
                 <Col md={8}>
-                    <ShiftList/>
+                    <ShiftList date={selectedDate}/>
                 </Col>
 
                 <Col md={2}>
@@ -80,6 +80,6 @@ const Shifts = observer(() => {
         </Container>
 
     );
-});
+};
 
 export default Shifts;

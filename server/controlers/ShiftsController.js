@@ -15,12 +15,9 @@ class ShiftsController {
         const {id} = req.params
         const shift = await Shifts.destroy({
             where: {id}
-        })
-        if(shift) {
-            return res.json("Shift was deleted")
-        } else {
-            return res.json("Shift not found")
-        }
+        });
+        return res.json({shift:shift})
+
     }
 }
 
