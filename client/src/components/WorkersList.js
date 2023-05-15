@@ -3,15 +3,25 @@ import React, {useContext, useEffect, useState} from "react";
 import {Context} from "../index";
 import {Button, Form, Table} from "react-bootstrap";
 import {fetchCompanyType, fetchWorker, deleteWorker, fetchWorkPermit, fetchWorkStatus} from "../http/ShiftsAPI";
+import CreateWorkers from "../modals/CreateWorkers";
+import {reaction} from "mobx";
 
-const WorkersList = observer(() => {
+const WorkersList = observer(({count}) => {
     const {shifts}=useContext(Context)
     const [searchTerm, setSearchTerm] = useState('');
+    const [stav, setStav] = useState('')
 
     useEffect(()=>{
         fetchWorker().then(data =>shifts.setWorker(data))
         fetchWorkPermit().then(data =>shifts.setWorkerPermir(data))
         fetchWorkStatus().then(data =>shifts.setWorkerStatus(data))
+        const disposer = reaction(
+            () => shifts.worker,
+            () => {
+                console.log('Список работников обновился!');
+            }
+        );
+        return () => disposer();
     },[])
 
     const Delete = async (id) => {
@@ -59,7 +69,7 @@ const WorkersList = observer(() => {
                 {filteredWorkers.map((worker) => {
                     const workPermit = shifts.workerPermit.find((permit) => permit.id === worker.workPermitId);
                     const workStatus = shifts.workerStatus.find((status) => status.id === worker.workStatusId);
-
+                    console.log(count)
                     return (
                         <tr key={worker.id}>
                             <td>{worker.firstname}</td>

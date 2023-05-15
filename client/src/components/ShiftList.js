@@ -1,40 +1,54 @@
 import React, {useContext, useEffect} from 'react';
-import WorkerCard from './WorkerCard';
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
-import {
-    deleteShift,
-    deleteWorker,
-    fetchPositions,
-    fetchShift,
-    fetchWorker,
-    fetchWorkHourTemplates
-} from "../http/ShiftsAPI";
+import {deleteShift, fetchPositions, fetchShift, fetchWorker, fetchWorkHourTemplates} from "../http/ShiftsAPI";
 import {Button, Card, Col, Form, Row} from "react-bootstrap";
-import data from "bootstrap/js/src/dom/data";
-const ShiftList = observer(({date}) => {
-    const {shifts}=useContext(Context)
-    useEffect(()=>{
-        fetchWorker().then(data =>shifts.setWorker(data))
-        fetchShift().then(data=>shifts.setShift(data))
-        fetchPositions().then(data=>shifts.setPositions(data))
-        fetchWorkHourTemplates().then(data=>shifts.setWorkHourTemplates(data))
-    },[])
+import {reaction} from "mobx";
 
+const ShiftList = observer(({date, company, onShiftDeleted}) => {
+    const {shifts} = useContext(Context)
+
+    useEffect(() => {
+        fetchWorker().then(data => shifts.setWorker(data))
+        fetchShift().then(data => shifts.setShift(data))
+        fetchPositions().then(data => shifts.setPositions(data))
+        fetchWorkHourTemplates().then(data => shifts.setWorkHourTemplates(data))
+        const disposer = reaction(
+            () => shifts.shift,
+            () => {
+                console.log('Список смен обновился!');
+                console.log(date)
+            }
+        );
+        return () => disposer();
+    }, [])
 
 
     const Delete = async (shiftId) => {
         try {
             await deleteShift(shiftId);
-            shifts.setShifts(shifts.shifts.filter(shift => shift.id !== shiftId));
+            onShiftDeleted();  // Вызов функции обновления списка после удаления смены
         } catch (error) {
             console.error('Error deleting shift:', error);
         }
     };
 
+    const isoString = new Date(date.getTime() + (24 * 60 * 60 * 1000)).toISOString().split('T')[0];
+    console.log(isoString);
+/*    const filteredShifts = shifts.shift.filter(shift =>
+        shift.startDate === isoString && shift.companyId === company
+    );*/
+
+    const filteredShifts = company
+        ? shifts.shift.filter(
+            (shift) =>
+                shift.startDate === isoString && shift.companyId === company
+        )
+        : shifts.shift;
+
     return (
         <div>
-            {shifts.shift.map(shift => {
+            {filteredShifts.map(shift => {
                 const worker = shifts.worker && shifts.worker.find(worker => worker.id === shift.workerId);
                 const position = shifts.positions && shifts.positions.find(position => position.id === shift.positionId);
                 const workHourTemplates = shifts.workHourTemplates && shifts.workHourTemplates.find(workHourTemplates => workHourTemplates.id === shift.workHourTemplateId);
@@ -51,16 +65,18 @@ const ShiftList = observer(({date}) => {
                                 <Col md={3}>
                                     <Form>
                                         {workHourTemplates && workHourTemplates.startTime}
-                                        <br />
+                                        <br/>
                                         {workHourTemplates && workHourTemplates.endTime}
                                     </Form>
                                 </Col>
                                 <Col md={3}>
+
                                     {position && position.name ? position.name : ""}
                                 </Col>
                                 <Col md={2}>
                                     <Form>
-                                        <Button variant="outline-danger" onClick={() => Delete(shift.id)} >Delete</Button>
+                                        <Button variant="outline-danger"
+                                                onClick={() => Delete(shift.id)}>Delete</Button>
                                     </Form>
                                 </Col>
                             </Row>

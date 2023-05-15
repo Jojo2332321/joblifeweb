@@ -4,7 +4,7 @@ import {
     createShift,
     fetchCompanys,
     fetchCompanyType,
-    fetchPositions,
+    fetchPositions, fetchShift,
     fetchWorker,
     fetchWorkHourTemplates
 } from "../http/ShiftsAPI";
@@ -30,6 +30,11 @@ const CreateShifts = ({show, onHide, date, userid}) => {
     const [selectedShift, setSelectedShift] = useState("");
     const [selectedCompany, setSelectedCompany] = useState("");
     const addShift = () => {
+        if (!selectedEmployee || !selectedPosition || !selectedShift || !selectedCompany) {
+            alert("All fields must be filled in");
+            return;
+        }
+
         const employeeShifts = shifts.shift.filter(shift => shift.workerId === selectedEmployee.value);
         const shiftOnSelectedDate = employeeShifts.find(shift => new Date(shift.startDate).toDateString() === date.toDateString());
 
@@ -51,6 +56,8 @@ const CreateShifts = ({show, onHide, date, userid}) => {
                 setSelectedShift("");
                 setSelectedCompany("");
                 onHide();
+                fetchShift().then(data => shifts.setShift(data));
+
             })
         }
     }

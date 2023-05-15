@@ -4,19 +4,23 @@ import {Button, Form, Modal} from "react-bootstrap";
 
 const CreateComapanyTyp = ({show, onHide}) => {
     const [name, setName]= useState('')
-    const addCompanyType = () =>{
+    const addCompanyType = () => {
+        if (!name.trim()) {
+            alert("Company type cannot be empty");
+            return;
+        }
 
-        createCompanyType(({name:name,userid: localStorage.getItem('userId')})).then(data =>{
-            setName('')
-            onHide()
+        createCompanyType(({name:name, userid: localStorage.getItem('userId')})).then(data =>{
+            setName('');
+            onHide();
         })
-    }
+    };
 
     return (
         <Modal
             show={show}
             onHide={onHide}
-            size="lg"
+            size="sm"
             centered
         >
             <Modal.Header closeButton>
@@ -36,7 +40,7 @@ const CreateComapanyTyp = ({show, onHide}) => {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="outline-danger" onClick={onHide}>Close</Button>
-                <Button variant="outline-success" onClick={addCompanyType}>Add</Button>
+                <Button variant="outline-success" onClick={addCompanyType} disabled={!name.trim()}>Add</Button>
             </Modal.Footer>
         </Modal>
     );

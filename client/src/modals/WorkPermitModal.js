@@ -7,6 +7,10 @@ const CreateModal = ({ show, onHide }) => {
     const [workPermitName, setWorkPermitName] = useState('');
 
     const addWorkPermit = () => {
+        if (!workPermitName) {
+            alert("Please enter a work permit name");
+            return;
+        }
         const formData = new FormData();
         formData.append('name', workPermitName);
         formData.append('userid',localStorage.getItem('userId'));

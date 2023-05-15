@@ -9,6 +9,10 @@ const CreateWorkHourTemplates = ({show, onHide}) => {
     const [endTime, setEndTime] = useState('')
 
     const addTemplate = () => {
+        if (!name || !description || !startTime || !endTime) {
+            alert("All fields must be filled in");
+            return;
+        }
         createWorkHourTemplates({name, description, startTime, endTime, userid: localStorage.getItem('userId')}).then(data => {
             setName('')
             setDescription('')

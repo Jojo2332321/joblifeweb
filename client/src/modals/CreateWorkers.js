@@ -1,9 +1,18 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
-import {createCompanys, createWorker, fetchCompanyType, fetchWorkPermit, fetchWorkStatus} from "../http/ShiftsAPI";
+import {
+    createCompanys,
+    createWorker,
+    fetchCompanyType,
+    fetchWorker,
+    fetchWorkPermit,
+    fetchWorkStatus
+} from "../http/ShiftsAPI";
 import {Context} from "../index";
+import {observe} from "mobx";
+import {observer} from "mobx-react-lite";
 
-const CreateWorkers = ({show, onHide}) => {
+const CreateWorkers = observer(({show, onHide, setCount}) => {
     const {shifts}=useContext(Context)
     useEffect(()=>{
         fetchWorkPermit().then(data =>shifts.setWorkerPermir(data))
@@ -17,7 +26,15 @@ const CreateWorkers = ({show, onHide}) => {
     const [citizenship , setCitizenship] = useState('')
     const [workStatus, setWorkStatus ] = useState('')
     const [workPermit,setWorkPermit] = useState('')
+
+
+
     const addWorker = () =>{
+        if (!firstname || !surname || !workPermit || !number || !age || !citizenship || !workStatus) {
+            alert("All fields must be filled in");
+            return;
+        }
+
         const formData = new FormData()
             formData.append('firstname', firstname)
             formData.append('surname', surname,)
@@ -36,6 +53,8 @@ const CreateWorkers = ({show, onHide}) => {
                 setCitizenship ('')
                 setWorkStatus ('')
                 onHide()
+                setCount(prevCount => prevCount + 1);
+            fetchWorker().then(data => shifts.setWorker(data));
         })
     }
 
@@ -46,9 +65,7 @@ const CreateWorkers = ({show, onHide}) => {
         setWorkPermit(event.target.value);
     };
 
-
     return (
-
         <Modal
             show={show}
             onHide={onHide}
@@ -109,6 +126,6 @@ const CreateWorkers = ({show, onHide}) => {
             </Modal.Footer>
         </Modal>
     );
-};
+});
 
 export default CreateWorkers;

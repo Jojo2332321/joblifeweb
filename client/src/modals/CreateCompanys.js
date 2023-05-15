@@ -8,18 +8,7 @@ const CreateCompanys = ({show, onHide}) => {
     const [name, setName]= useState('')
     const [type, setType]= useState('')
     const [selectedType, setSelectedType] = useState('');
-    const addCompanys = () =>{
-        const formData = new FormData()
-            formData.append('name',name)
-            formData.append('companyTypeId',selectedType)
-            formData.append('userid', localStorage.getItem('userId'))
 
-        createCompanys(formData).then(data =>{
-            setSelectedType('')
-            setName('')
-            onHide()
-        })
-    }
     useEffect(()=>{
         fetchCompanyType().then(data =>shifts.setCompanyType(data))
     },[])
@@ -28,7 +17,23 @@ const CreateCompanys = ({show, onHide}) => {
         setSelectedType(event.target.value);
         console.log(selectedType)
     };
+    const addCompanys = () => {
+        if (!name.trim() || !selectedType.trim()) {
+            alert("Company name and type cannot be empty");
+            return;
+        }
 
+        const formData = new FormData()
+        formData.append('name', name)
+        formData.append('companyTypeId', selectedType)
+        formData.append('userid', localStorage.getItem('userId'))
+
+        createCompanys(formData).then(data => {
+            setSelectedType('')
+            setName('')
+            onHide()
+        })
+    };
     return (
 
         <Modal

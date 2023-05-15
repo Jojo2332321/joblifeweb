@@ -12,14 +12,6 @@ const AppRouter = () => {
 
         <div>
             <Routes>
-{/*              НАДО СДЕЛВТЬ ЧЕРЕЗ МАССИВ... ТАК ТУПо и даже не законно
-
-                {isAuth && authRoutes.map(({path,Component}) =>
-                    <Route key={path} path={path} element={<Component/>} exact/>
-                )}
-                {publicRoutes.map(({path,Component}) =>
-                    <Route key={path} path={path} element={<Component/>} exact/>
-                )}*/}
                 {user.IsAuth && <Route path="/admin" element={<Admin/>}/>}
                 {user.IsAuth && <Route path="/settings" element={<Settings/>}/>}
                 {user.IsAuth && <Route path="/shifts" element={<Shifts/>}/>}
