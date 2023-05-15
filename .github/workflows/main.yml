@@ -1,0 +1,13 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+  
+    runs-on: ununtu-latest
+    
+    steps:
+    - uses: actions/s@v1
+    - name: Run 
+      run: echo "Hello"
