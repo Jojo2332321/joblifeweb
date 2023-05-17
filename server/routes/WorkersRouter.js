@@ -8,6 +8,6 @@ router.delete('/:id', WorkersController.delete)
 router.get('/:firstname', WorkersController.getByName)
 router.get('/:surname', WorkersController.getBySurname)
 router.get('/:citizenship', WorkersController.getByCitizenship)
-router.delete('/:id', WorkersController.delete)
+router.put('/:id', WorkersController.update);
 
 module.exports = router

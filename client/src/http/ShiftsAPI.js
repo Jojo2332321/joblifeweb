@@ -63,9 +63,6 @@ export const fetchWorkStatus=async () =>
     const {data} = await $host.get('api/workStatus')
     return data
 }
-
-
-
 export const fetchPositions = async () =>
 {
     const {data} = await $host.get('api/positions')
@@ -113,4 +110,9 @@ export const deleteCompany = async (id)=> {
 export const deleteShift = async (id)=> {
     const response = await $host.delete('api/shifts/' + id);
     return response.data
+}
+
+export const updateWorker = async (id, worker) => {
+    const {data} = await $host.put('api/workers/' + id, worker);
+    return data;
 }

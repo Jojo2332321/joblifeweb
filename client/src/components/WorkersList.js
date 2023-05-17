@@ -5,11 +5,15 @@ import {Button, Form, Table} from "react-bootstrap";
 import {fetchCompanyType, fetchWorker, deleteWorker, fetchWorkPermit, fetchWorkStatus} from "../http/ShiftsAPI";
 import CreateWorkers from "../modals/CreateWorkers";
 import {reaction} from "mobx";
+import WorkerInfoModal from "../modalList/WorkerInfoModal";
+import WorkerShiftModal from "../modalList/WorkerShiftModal";
 
 const WorkersList = observer(({count}) => {
     const {shifts}=useContext(Context)
     const [searchTerm, setSearchTerm] = useState('');
-    const [stav, setStav] = useState('')
+    const [workerInfo, setWorkerInfo] = useState(false)
+    const [selectedWorker, setSelectedWorker] = useState(null)
+    const [workerShift, setWorkerShift] = useState(false)
 
     useEffect(()=>{
         fetchWorker().then(data =>shifts.setWorker(data))
@@ -18,7 +22,7 @@ const WorkersList = observer(({count}) => {
         const disposer = reaction(
             () => shifts.worker,
             () => {
-                console.log('Список работников обновился!');
+
             }
         );
         return () => disposer();
@@ -42,6 +46,11 @@ const WorkersList = observer(({count}) => {
         (worker.firstname.toLowerCase().includes(searchTerm.toLowerCase()) ||
             worker.surname.toLowerCase().includes(searchTerm.toLowerCase()))
     );
+
+    const modalForm = (worker)=>{
+        setSelectedWorker(worker)
+        setWorkerShift(true)
+    }
 
     return (
         <>
@@ -69,9 +78,9 @@ const WorkersList = observer(({count}) => {
                 {filteredWorkers.map((worker) => {
                     const workPermit = shifts.workerPermit.find((permit) => permit.id === worker.workPermitId);
                     const workStatus = shifts.workerStatus.find((status) => status.id === worker.workStatusId);
-                    console.log(count)
+
                     return (
-                        <tr key={worker.id}>
+                        <tr onDoubleClick={() =>{setSelectedWorker(worker); setWorkerInfo(true); console.log(selectedWorker)}} key={worker.id}>
                             <td>{worker.firstname}</td>
                             <td>{worker.surname}</td>
                             <td>{worker.age}</td>
@@ -84,14 +93,23 @@ const WorkersList = observer(({count}) => {
                                     Delete
                                 </Button>
                             </td>
+                            <td className="text-center">
+                                <Button variant="outline-dark" onClick={()=>modalForm(worker)}>
+                                    Shift
+                                </Button>
+
+
+                            </td>
                         </tr>
                     );
                 })}
                 </tbody>
             </Table>
+            <WorkerInfoModal show={workerInfo} onHide={() => {setWorkerInfo(false); setSelectedWorker(null);}} worker={setSelectedWorker}/>
+            <WorkerShiftModal show={workerShift} onHide={() => setWorkerShift(false)} worker={selectedWorker}/>
         </>
     );
-});
+})
 
 export default WorkersList;
 

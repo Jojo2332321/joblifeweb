@@ -7,7 +7,6 @@ import {reaction} from "mobx";
 
 const ShiftList = observer(({date, company, onShiftDeleted}) => {
     const {shifts} = useContext(Context)
-
     useEffect(() => {
         fetchWorker().then(data => shifts.setWorker(data))
         fetchShift().then(data => shifts.setShift(data))
@@ -16,36 +15,29 @@ const ShiftList = observer(({date, company, onShiftDeleted}) => {
         const disposer = reaction(
             () => shifts.shift,
             () => {
-                console.log('Список смен обновился!');
-                console.log(date)
             }
         );
         return () => disposer();
     }, [])
-
-
     const Delete = async (shiftId) => {
         try {
             await deleteShift(shiftId);
             onShiftDeleted();  // Вызов функции обновления списка после удаления смены
         } catch (error) {
-            console.error('Error deleting shift:', error);
+
         }
     };
 
-    const isoString = new Date(date.getTime() + (24 * 60 * 60 * 1000)).toISOString().split('T')[0];
-    console.log(isoString);
+    const isoString = date.toISOString().split('T')[0];
 /*    const filteredShifts = shifts.shift.filter(shift =>
         shift.startDate === isoString && shift.companyId === company
     );*/
-
     const filteredShifts = company
         ? shifts.shift.filter(
             (shift) =>
                 shift.startDate === isoString && shift.companyId === company
         )
         : shifts.shift;
-
     return (
         <div>
             {filteredShifts.map(shift => {

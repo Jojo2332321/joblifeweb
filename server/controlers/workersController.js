@@ -55,6 +55,26 @@ class WorkersController {
         return res.json({deletedRowsCount: deletedRowsCount})
     }
 
+    async update(req, res) {
+        const {id} = req.params;
+        const {firstname, surname, number, age, citizenship} = req.body;
+
+        // Находим работника по id
+        const worker = await Workers.findOne({ where: { id } });
+
+        // Обновляем поля работника
+        if (firstname) worker.firstname = firstname;
+        if (surname) worker.surname = surname;
+        if (number) worker.number = number;
+        if (age) worker.age = age;
+        if (citizenship) worker.citizenship = citizenship;
+
+        // Сохраняем обновленного работника
+        await worker.save();
+
+        return res.json(worker);
+    }
+
 }
 
 module.exports = new WorkersController()

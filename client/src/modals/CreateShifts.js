@@ -16,7 +16,6 @@ import data from "bootstrap/js/src/dom/data";
 
 const CreateShifts = ({show, onHide, date, userid}) => {
     const {shifts} = useContext(Context)
-
     const isoString = date.toISOString();
     useEffect(() => {
         fetchPositions().then(data => shifts.setPositions(data));
@@ -57,7 +56,6 @@ const CreateShifts = ({show, onHide, date, userid}) => {
                 setSelectedCompany("");
                 onHide();
                 fetchShift().then(data => shifts.setShift(data));
-
             })
         }
     }
