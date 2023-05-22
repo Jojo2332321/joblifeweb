@@ -27,7 +27,6 @@ const WorkerInfoModal = ({show, onHide, worker}) => {
 
     const handleSubmit = async(e) => {
         e.preventDefault();
-        // Создание объекта с новыми данными
         let updatedWorkerData = {};
         if (worker.firstname !== firstname) updatedWorkerData.firstname = firstname;
         if (worker.surname !== surname) updatedWorkerData.surname = surname;

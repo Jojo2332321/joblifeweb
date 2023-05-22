@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, Col, Form, Modal, Table} from "react-bootstrap";
+import {Button, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
 import {Context} from "../index";
+import {observer} from "mobx-react-lite";
 import {
     deleteShift,
     fetchCompanys,
@@ -9,15 +10,14 @@ import {
     fetchWorker,
     fetchWorkHourTemplates
 } from "../http/ShiftsAPI";
-import data from "bootstrap/js/src/dom/data";
-import {observer} from "mobx-react-lite";
-import DatePicker from "react-datepicker";
-import CreateShifts from "../modals/CreateShifts";
-import CreateCompanys from "../modals/CreateCompanys";
+import CreateShiftInWorker from "../modals/CreateShiftInWorker";
 
-const WorkerShiftModal = observer(({show, onHide, worker}) => {
+
+
+const WorkerShiftModal = observer(({show, onHide, worker, setWorkerModal}) => {
     const {shifts} = useContext(Context);
-    const [createShift, setCreateShift] = useState(false)
+    const [createShift, setCreateShift] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(null);
 
     useEffect(() => {
         fetchWorker().then(data => shifts.setWorker(data));
@@ -30,7 +30,8 @@ const WorkerShiftModal = observer(({show, onHide, worker}) => {
     const filteredShifts = worker
         ? shifts.shift.filter(
             (shift) =>
-                shift.workerId === worker.id
+                shift.workerId === worker.id &&
+                (!selectedDate || new Date(shift.startDate) >= new Date(selectedDate)) // Добавлено
         )
         : shifts.shift;
 
@@ -46,21 +47,34 @@ const WorkerShiftModal = observer(({show, onHide, worker}) => {
 
 
 
-
     return (
         <Modal
             show={show}
             onHide={onHide}
-            size="lg"
+            size="xl"
             aria-labelledby="contained-modal-title-vcenter"
             centered
         >
             <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">
-                    Worker Shift {worker?.firstname} {worker?.surname}
-                </Modal.Title>
+                <Container>
+                    <Row className="justify-content-center align-items-center">
+                        <Col sm={10}>
+                            <Modal.Title id="contained-modal-title-vcenter">
+                                Worker Shift {worker?.firstname} {worker?.surname}
+                            </Modal.Title>
+                        </Col>
+                        <Col sm={2}>
+                            <Form.Group controlId="formDate" className="mb-3"> {/* Добавлено */}
+                                <Form.Label></Form.Label>
+                                <Form.Control type="date" onChange={e => setSelectedDate(e.target.value)} />
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                </Container>
             </Modal.Header>
             <Modal.Body>
+
+                <text>list of shifts from {selectedDate}</text>
                 <Table className="mt-2" striped bordered hover>
                     <thead>
                     <tr>
@@ -99,8 +113,7 @@ const WorkerShiftModal = observer(({show, onHide, worker}) => {
 
                 <Button onClick={()=>setCreateShift(true)}>Add a shift</Button>{' '}
                 <Button onClick={onHide}>Close</Button>
-
-                {/*<CreateCompanys show={createShift} onHide={()=> setCreateShift(false)}/>*/}
+                <CreateShiftInWorker show={createShift} onHide={() => setCreateShift(false)} worker={worker}/>
             </Modal.Footer>
         </Modal>
     );
