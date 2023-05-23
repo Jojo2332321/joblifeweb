@@ -31,7 +31,8 @@ const Workers = sequelize.define('worker', {
     number: {type: DataTypes.STRING},
     age: {type: DataTypes.INTEGER},
     citizenship: {type: DataTypes.STRING},
-    userid:{type:DataTypes.INTEGER}
+    userid:{type:DataTypes.INTEGER},
+/*    telegramChatId:{type:DataTypes.INTEGER}*/
 });
 
 const Notes = sequelize.define('note', {
@@ -79,6 +80,7 @@ const Shifts = sequelize.define('shift', {
     startDate: {type: DataTypes.DATEONLY},
     userid:{type:DataTypes.INTEGER}
 });
+
 
 
 

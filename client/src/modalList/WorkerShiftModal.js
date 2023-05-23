@@ -74,7 +74,7 @@ const WorkerShiftModal = observer(({show, onHide, worker, setWorkerModal}) => {
             </Modal.Header>
             <Modal.Body>
 
-                <text>list of shifts from {selectedDate}</text>
+                list of shifts from {selectedDate}
                 <Table className="mt-2" striped bordered hover>
                     <thead>
                     <tr>

@@ -13,6 +13,7 @@ const WorkersList = observer(({count}) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [workerInfo, setWorkerInfo] = useState(false)
     const [selectedWorker, setSelectedWorker] = useState(null)
+    const [selectedWorker2, setSelectedWorker2] = useState(null)
     const [workerShift, setWorkerShift] = useState(false)
 
     useEffect(()=>{
@@ -27,6 +28,7 @@ const WorkersList = observer(({count}) => {
         );
         return () => disposer();
     },[])
+
 
     const Delete = async (id) => {
         try {
@@ -50,6 +52,11 @@ const WorkersList = observer(({count}) => {
     const modalForm = (worker)=>{
         setSelectedWorker(worker)
         setWorkerShift(true)
+    }
+
+    const selectWorker = (worker) => {
+        setSelectedWorker2(worker);
+        setWorkerInfo(true);
     }
 
     return (
@@ -80,7 +87,7 @@ const WorkersList = observer(({count}) => {
                     const workStatus = shifts.workerStatus.find((status) => status.id === worker.workStatusId);
 
                     return (
-                        <tr onDoubleClick={() =>{setSelectedWorker(worker); setWorkerInfo(true); console.log(selectedWorker)}} key={worker.id}>
+                        <tr onDoubleClick={() =>selectWorker(worker)} key={worker.id}>
                             <td>{worker.firstname}</td>
                             <td>{worker.surname}</td>
                             <td>{worker.age}</td>
@@ -105,7 +112,8 @@ const WorkersList = observer(({count}) => {
                 })}
                 </tbody>
             </Table>
-            <WorkerInfoModal show={workerInfo} onHide={() => {setWorkerInfo(false); setSelectedWorker(null);}} worker={setSelectedWorker}/>
+            <WorkerInfoModal show={workerInfo} onHide={() => setWorkerInfo(false)} worker={selectedWorker2}/>
+
             <WorkerShiftModal show={workerShift} onHide={() => setWorkerShift(false)} worker={selectedWorker}/>
         </>
     );
