@@ -1,15 +1,13 @@
-import React, { useContext, useEffect } from 'react';
-import { Context } from "../index";
-import { deleteCompanyType, fetchCompanyType } from "../http/ShiftsAPI";
-import { Button, Modal, Table } from "react-bootstrap";
+import React, {useContext, useEffect} from 'react';
+import {Context} from "../index";
+import {deleteCompanyType, fetchCompanyType} from "../http/ShiftsAPI";
+import {Button, Modal, Table} from "react-bootstrap";
 
-const CompanyTypesList = ({ show, onHide }) => {
-    const { shifts } = useContext(Context);
-    const userId = localStorage.getItem('userId'); // Получить значение userId из localStorage
-
-    useEffect(() => {
-        fetchCompanyType().then(data => shifts.setCompanyType(data));
-    }, []);
+const CompanyTypesList = ({show, onHide}) => {
+    const {shifts}=useContext(Context)
+    useEffect(()=>{
+        fetchCompanyType().then(data =>shifts.setCompanyType(data))
+    },[])
 
     const deleteType = async (id) => {
         try {
@@ -20,8 +18,6 @@ const CompanyTypesList = ({ show, onHide }) => {
             console.error('Error deleting company type:', error);
         }
     };
-
-    const filteredCompanyTypes = shifts.companyType.filter(type => type.userId === userId);
 
     return (
         <Modal
@@ -45,7 +41,7 @@ const CompanyTypesList = ({ show, onHide }) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {filteredCompanyTypes.map(companyType =>
+                    {shifts.companyType.map(companyType =>
                         <tr key={companyType.id}>
                             <td>{companyType.name}</td>
                             <td className="text-center">
@@ -62,6 +58,7 @@ const CompanyTypesList = ({ show, onHide }) => {
                 <Button variant="secondary" onClick={onHide}>Close</Button>
             </Modal.Footer>
         </Modal>
+
     );
 };
 

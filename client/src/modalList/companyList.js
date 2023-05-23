@@ -1,19 +1,17 @@
-import React, { useContext, useEffect } from 'react';
-import { Context } from "../index";
-import { deleteCompany, fetchCompanys, fetchCompanyType } from "../http/ShiftsAPI";
-import { Button, Modal, Table } from "react-bootstrap";
-import {observer} from "mobx-react-lite";
+import React, {useContext, useEffect, useState} from 'react';
+import {Context} from "../index";
+import {deleteCompany, fetchCompanys, fetchCompanyType} from "../http/ShiftsAPI";
+import {Button, Modal, Table, Form} from "react-bootstrap";
 
-const CompanyList = observer(({ show, onHide }) => {
-    const { shifts } = useContext(Context);
-    const userId = localStorage.getItem('userId'); // Получить значение userId из localStorage
+const CompanyList = ({show, onHide}) => {
+    const {shifts}=useContext(Context)
 
-    useEffect(() => {
-        fetchCompanys().then(data => shifts.setCompanys(data));
-        fetchCompanyType().then(data => shifts.setCompanyType(data));
-    }, []);
+    useEffect(()=>{
+        fetchCompanys().then(data =>shifts.setCompanys(data))
+        fetchCompanyType().then(data =>shifts.setCompanyType(data))
+    },[])
 
-    const removeCompany = async (id) => {
+    const removeCompany  = async (id) => {
         try {
             await deleteCompany(id);
             const updatedCompanys = shifts.companys.filter(company => company.id !== id);
@@ -22,8 +20,6 @@ const CompanyList = observer(({ show, onHide }) => {
             console.error('Error deleting company:', error);
         }
     };
-
-    const filteredCompanys = shifts.companys.filter(company => company.userId === userId);
 
     return (
         <Modal
@@ -48,7 +44,7 @@ const CompanyList = observer(({ show, onHide }) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {filteredCompanys.map(company => {
+                    {shifts.companys.map(company => {
                         const companyType = shifts.companyType.find(type => type.id === company.companyTypeId);
 
                         return (
@@ -56,7 +52,7 @@ const CompanyList = observer(({ show, onHide }) => {
                                 <td>{company.name}</td>
                                 <td>{companyType ? companyType.name : "N/A"}</td>
                                 <td className="text-center">
-                                    <Button variant="danger" onClick={() => removeCompany(company.id)}>
+                                    <Button variant="danger" onClick={() => removeCompany (company.id)}>
                                         Delete
                                     </Button>
                                 </td>
@@ -71,6 +67,6 @@ const CompanyList = observer(({ show, onHide }) => {
             </Modal.Footer>
         </Modal>
     );
-});
+};
 
 export default CompanyList;

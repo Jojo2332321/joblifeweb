@@ -86,8 +86,7 @@ const Shifts = observer(() => {
                             date={updatedDate}
                             />
                         <hr/>
-                        <Button className="mt-2" variant="outline-primary">Shift export</Button>
-                        <Button className="mt-2" variant="outline-primary">Shift import</Button>
+
                     </Row>
 
                 </Col>
