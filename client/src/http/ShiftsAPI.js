@@ -93,6 +93,18 @@ export const fetchShift = async () =>
     return data
 }
 
+export const createExpectedShift = async (expectedShifts)=>
+{
+    const {data} = await $host.post('api/expectedShifts/', expectedShifts)
+    return data
+}
+
+export const fetchExpectedShift = async () =>
+{
+    const {data} = await $host.get('api/expectedShifts/')
+    return data
+}
+
 export const deleteWorker = async (id) => {
     const response = await $host.delete('api/workers/' + id);
     return response.data;

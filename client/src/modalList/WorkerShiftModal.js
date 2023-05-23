@@ -11,6 +11,7 @@ import {
     fetchWorkHourTemplates
 } from "../http/ShiftsAPI";
 import CreateShiftInWorker from "../modals/CreateShiftInWorker";
+import CreateExpectedShifts from "../modals/CreateExpectedShifts";
 
 
 
@@ -18,6 +19,7 @@ const WorkerShiftModal = observer(({show, onHide, worker, setWorkerModal}) => {
     const {shifts} = useContext(Context);
     const [createShift, setCreateShift] = useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
+    const [exShifts, setExShifts] = useState(false)
 
     useEffect(() => {
         fetchWorker().then(data => shifts.setWorker(data));
@@ -110,10 +112,12 @@ const WorkerShiftModal = observer(({show, onHide, worker, setWorkerModal}) => {
                 </Table>
             </Modal.Body>
             <Modal.Footer>
-
+                <Button onClick={()=>setExShifts(true)}>Add Expected Shifs</Button>
                 <Button onClick={()=>setCreateShift(true)}>Add a shift</Button>{' '}
                 <Button onClick={onHide}>Close</Button>
+
                 <CreateShiftInWorker show={createShift} onHide={() => setCreateShift(false)} worker={worker}/>
+                <CreateExpectedShifts show={exShifts} onHide={() => setExShifts(false)} worker={worker}/>
             </Modal.Footer>
         </Modal>
     );

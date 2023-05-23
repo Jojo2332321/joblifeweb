@@ -11,7 +11,12 @@ export default class ShiftsM{
         this._workHourTemplates = []
         this._permit = []
         this._status = []
+        this._expectedShifts=[]
         makeAutoObservable(this)
+    }
+
+    setExShifts(exShifts){
+        this._expectedShifts = exShifts
     }
 
     setWorkHourTemplates(workHourTemplates){
@@ -81,4 +86,7 @@ export default class ShiftsM{
         return this._workHourTemplates
     }
 
+    get exShifts(){
+        return this._expectedShifts
+    }
 }

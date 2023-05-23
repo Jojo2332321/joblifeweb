@@ -9,6 +9,7 @@ import ShiftList from "../components/ShiftList";
 import Calendar from "../components/Calendar";
 import CreateShifts from "../modals/CreateShifts";
 import DatePicker from "react-datepicker";
+import CreateAutoShfits from "../modals/CreateAutoShfits";
 
 
 const Shifts = observer(() => {
@@ -16,6 +17,7 @@ const Shifts = observer(() => {
     const {user} = useContext(Context)
 
     const [createShiftModal, setCteateShiftModal] = useState(false);
+    const [addShiftsModal, setAddShiftsModal] = useState(false);
     useEffect(() => {
         fetchCompanys().then(data => shifts.setCompanys(data))
         fetchShift().then(data => shifts.setShift(data));
@@ -23,6 +25,10 @@ const Shifts = observer(() => {
 
     const [selectData, setSelectData] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
+
+    const updatedDate = new Date(selectedDate);
+    updatedDate.setDate(updatedDate.getDate() + 1);
+
     useEffect(() => {
     }, [selectData]);
     const handleDateChange = (date) => {
@@ -52,7 +58,7 @@ const Shifts = observer(() => {
                     <CompanysBar onCompanySelected={handleCompanySelected}/>
                 </Col>
                 <Col md={8}>
-                    <ShiftList date={selectedDate} company={selectedCompanyId} onShiftDeleted={updateShifts}/>
+                    <ShiftList date={updatedDate} company={selectedCompanyId} onShiftDeleted={updateShifts}/>
                 </Col>
                 <Col md={2}>
                     <Row className="mt-2">
@@ -67,13 +73,18 @@ const Shifts = observer(() => {
                     <Row>
                         <Button className="mt-2" variant="outline-primary" onClick={() => setCteateShiftModal(true)}>Add
                             a shift</Button>
-                        <Button className="mt-2" variant="outline-primary">Add sfifts</Button>
+                        <Button className="mt-2" variant="outline-primary" onClick={() => setAddShiftsModal(true)}>Add sfifts</Button>
                         <CreateShifts
                             show={createShiftModal}
                             onHide={() => setCteateShiftModal(false)}
-                            date={selectData}
+                            date={updatedDate}
                             company={selectedCompanyId}
                         />
+                        <CreateAutoShfits
+                            show={addShiftsModal}
+                            onHide={() => setAddShiftsModal(false)}
+                            date={updatedDate}
+                            />
                         <hr/>
                         <Button className="mt-2" variant="outline-primary">Shift export</Button>
                         <Button className="mt-2" variant="outline-primary">Shift import</Button>

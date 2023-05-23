@@ -2,8 +2,8 @@ const {ExpectedShifts} = require("../models/models");
 
 class ExpectedShiftsController {
     async create(req, res) {
-        const {Date, userID} = req.body
-        const expectedShift = await ExpectedShifts.create({Date, userID})
+        const {Date, userid,workerId} = req.body
+        const expectedShift = await ExpectedShifts.create({Date, userid,workerId})
         return res.json(expectedShift)
     }
 

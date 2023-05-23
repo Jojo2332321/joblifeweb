@@ -104,8 +104,6 @@ const WorkersList = observer(({count}) => {
                                 <Button variant="outline-dark" onClick={()=>modalForm(worker)}>
                                     Shift
                                 </Button>
-
-
                             </td>
                         </tr>
                     );

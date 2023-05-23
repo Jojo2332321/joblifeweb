@@ -39,7 +39,7 @@ const CreateCompanys = ({show, onHide}) => {
         <Modal
             show={show}
             onHide={onHide}
-            size="lg"
+            size="bs"
             centered
         >
             <Modal.Header closeButton>
