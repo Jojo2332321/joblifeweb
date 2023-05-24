@@ -1,7 +1,7 @@
 const {Sequelize} = require('sequelize');
 
 module.exports = new Sequelize(
-    'job_life_v5',
+    'telegrambotdb',
     'postgres',
     '529532',
     {

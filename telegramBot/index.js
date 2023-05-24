@@ -1,7 +1,7 @@
 const TelegramApi = require('node-telegram-bot-api')
-const token = '6218719003:AAHpIztPUWyV4Mr_ovm4IYpmwXqsl7YFUM8'
+const token = '6218719003:AAH4Z7wvTJbUMLvL5X1D3km6pM-wm2LRlic'
 const bot = new TelegramApi(token,{polling:true})
-const { Workers } = require('../server/models/models');
+const { Workers } = require('./models');
 const sequelize = require('./db');
 const chatState = {};
 const start = async () => {
@@ -9,27 +9,26 @@ const start = async () => {
         await sequelize.authenticate()
         await sequelize.sync()
     }catch (e){
-        console.log('BD ERROR', e)
+        console.log('BD ERROR')
     }
 
     bot.setMyCommands([
         {command:'/start', description: 'start'},
-        {command: '/shift', description: 'show shifts'}
+        {command: '/auth', description: 'suth'},
+        {command: '/shift', description: 'create expected shifts'}
+        {command: '/showMyShifts', description: 'create expected shifts'}
     ])
     bot.on('message', async msg =>{
         const text = msg.text;
         const chatId = msg.chat.id;
         if (text ==='/start') {
-
-            /*const workers = await Workers.findAll();
-
-            let workersList = '';
-            workers.forEach(worker => {
-                workersList += `ID: ${worker.id}, Name: ${worker.firstname} ${worker.surname}, Number: ${worker.number}\n`;
-            });
-
-            return bot.sendMessage(chatId, `List of Workers:\n${workersList}`);*/
+            return bot.sendMessage(chatId, `Hello`);
         }
+
+        if (text ==='/auth') {
+            return bot.sendMessage(chatId, `Enter yor auth code`);
+        }
+
         if (text ==='/info'){
             return  bot.sendMessage(chatId, `privet yoba`)
         }
